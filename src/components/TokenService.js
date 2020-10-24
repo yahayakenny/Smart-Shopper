@@ -1,7 +1,7 @@
 import generateToken from './token'
 
-const setToken = () => {
-    return localStorage.setItem('token', generateToken())
+const setToken = (value) => {
+    return localStorage.setItem('token', value)
 }
 
 const getToken = () => {

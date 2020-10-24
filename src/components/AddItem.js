@@ -34,12 +34,27 @@ export const AddItem = () => {
         .then((data) => {
             console.log(data)
             if(data.docs.length){
+                let items = data.docs[0].data().items.map(element => element.name)
+
+                let noCapitals = items.map(element => {
+                    return element.trim()
+                    .toLowerCase()
+                    .replace(/[.,:'?!;\-_)({}[\]¡¿"—*%#^]*/g, '')
+                })
+
+                let noCapitalItem = inputValue.trim().toLowerCase().replace(/[.,:'?!;\-_)({}[\]¡¿"—*%#^]*/g, '')
+                let filtered = noCapitals.find(element => element == noCapitalItem)
+                let found = items.find(element => element == inputValue)
+
+                if(!filtered && !found){
                 shoppingList
                 .doc(data.docs[0].id)
                 .update({
                     items: firebase.firestore.FieldValue.arrayUnion(newItem)
                 })
-            }else {
+                } 
+
+            } else {
                 shoppingList.add({
                     token: getToken(),
                     items: [newItem]
